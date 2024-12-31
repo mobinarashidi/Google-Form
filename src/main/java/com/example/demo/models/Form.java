@@ -3,7 +3,10 @@ package com.example.demo.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Document(collection = "forms")
 public class Form {
@@ -46,6 +49,17 @@ public class Form {
     }
 
     public void setFields(List<Field> fields) {
+        if (fields != null) {
+            Set<String> fieldNames = new HashSet<>();
+            for (Field field : fields) {
+                if (field.getId() == null || field.getId().isEmpty()) {
+                    field.setId(UUID.randomUUID().toString());
+                }
+                if (!fieldNames.add(field.getName())) {
+                    throw new IllegalArgumentException("Field names must be unique within a form.");
+                }
+            }
+        }
         this.fields = fields;
     }
 
@@ -56,54 +70,4 @@ public class Form {
     public void setPublished(boolean published) {
         this.published = published;
     }
-
-    public static class Field {
-        private String id;
-        private String name;
-        private String label;
-        private String type;
-        private String defaultValue;
-
-        // Getters and Setters
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        public void setLabel(String label) {
-            this.label = label;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getDefaultValue() {
-            return defaultValue;
-        }
-
-        public void setDefaultValue(String defaultValue) {
-            this.defaultValue = defaultValue;
-        }
     }
-}

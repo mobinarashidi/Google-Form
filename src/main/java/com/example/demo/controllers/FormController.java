@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.models.Form;
+import com.example.demo.models.Field;
 import com.example.demo.services.FormService;
 
 import java.util.List;
@@ -40,15 +41,16 @@ public class FormController {
         formService.deleteForm(id);
     }
 
-    @GetMapping("/{id}/fields")
-    public List<Form.Field> getFormFields(@PathVariable String id) {
-        return formService.getFormFields(id);
-    }
+@GetMapping("/{id}/fields")
+public List<Field> getFormFields(@PathVariable String id) {
+    return formService.getFormFields(id);
+}
 
-    @PutMapping("/{id}/fields")
-    public Form updateFormFields(@PathVariable String id, @RequestBody List<Form.Field> fields) {
-        return formService.updateFormFields(id, fields);
-    }
+@PutMapping("/{id}/fields")
+public Form updateFormFields(@PathVariable String id, @RequestBody List<Field> fields) {
+    return formService.updateFormFields(id, fields);
+}
+
 
     @PostMapping("/{id}/publish")
     public Form publishForm(@PathVariable String id) {
